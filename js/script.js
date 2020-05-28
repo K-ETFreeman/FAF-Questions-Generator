@@ -23,7 +23,7 @@ function getRandomUnitInfo() {
         TECHLEVEL: "",
         BUILDING: false,
         NAME: unit.Description,
-        WEAPONS: unit.Weapon? unit.Weapon.filter( (i)=>i.DisplayName) : undefined,
+        WEAPONS: unit.Weapon? unit.Weapon.filter( (i)=>i.DisplayName && i.Damage) : undefined,
         ECONOMY: unit.Economy,
         SUPPORT: unit.Intel,
         DEFENCE: unit.Defense,
@@ -62,8 +62,11 @@ function createRandomQuestion() {
         return;
     }
 
+
+
     const name = unit.NAME;
     const w = (unit.WEAPONS) ? rndFromArray(unit.WEAPONS) : {};
+
     const HP = unit.DEFENCE ? unit.DEFENCE.Health : undefined;
     const SPEED = unit.SPEED;
     const weapon = {
@@ -74,7 +77,7 @@ function createRandomQuestion() {
         PERSHOT: w.ProjectilesPerOnFire,
         AOE: w.DamageRadius
     };
-
+    
     if (w.MuzzleSalvoSize > weapon.PERSHOT) weapon.PERSHOT = w.MuzzleSalvoSize;
     
     weapon.DPS = (weapon.NAME && !name.match(/Tactical Missile Launcher/)) ?
@@ -82,6 +85,12 @@ function createRandomQuestion() {
             (weapon.DMG * weapon.ROF * (weapon.PERSHOT ? weapon.PERSHOT : 1)) :
             (weapon.DMG * w.DoTPulses + (w.InitialDamage ? w.InitialDamage : 0)) * weapon.ROF * (weapon.PERSHOT ? weapon.PERSHOT : 1))
         : undefined;
+
+    if (unit.WEAPONS && unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).length > 0)
+            {
+                let max = unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).reduce( (val, i) => i.Damage > val? val = i.Damage : val, -1000 );
+                if (weapon.DMG < max) weapon.NAME += ' (minor)';
+            }
 
     let vision = unit.SUPPORT ?
         {
@@ -163,7 +172,7 @@ function updateBase() {
             questions++;
     
         if (filters.QUESTIONS.indexOf('WEAPON') + 1)
-            if(item.Weapon && item.Weapon.length > 0 && item.Weapon.reduce( ((w, i) => i.DisplayName? true : w), false)) questions++;
+            if(item.Weapon && item.Weapon.length > 0 && item.Weapon.reduce( ((w, i) => i.DisplayName && i.Damage ? true : w), false)) questions++;
     
             
         if (filters.QUESTIONS.indexOf('SENSOR') + 1)
