@@ -23,7 +23,7 @@ function getRandomUnitInfo() {
         TECHLEVEL: "",
         BUILDING: false,
         NAME: unit.Description,
-        WEAPONS: unit.Weapon.filter( (i)=>i.DisplayName),
+        WEAPONS: unit.Weapon? unit.Weapon.filter( (i)=>i.DisplayName) : undefined,
         ECONOMY: unit.Economy,
         SUPPORT: unit.Intel,
         DEFENCE: unit.Defense,
@@ -175,7 +175,7 @@ function updateBase() {
 
         return true;
     });
-
+    
     createRandomQuestion();
 
 }
