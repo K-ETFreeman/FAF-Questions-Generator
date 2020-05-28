@@ -23,7 +23,7 @@ function getRandomUnitInfo() {
         TECHLEVEL: "",
         BUILDING: false,
         NAME: unit.Description,
-        WEAPONS: unit.Weapon,
+        WEAPONS: unit.Weapon.filter( (i)=>i.DisplayName),
         ECONOMY: unit.Economy,
         SUPPORT: unit.Intel,
         DEFENCE: unit.Defense,
@@ -75,8 +75,8 @@ function createRandomQuestion() {
         AOE: w.DamageRadius
     };
 
-    if (!weapon.PERSHOT && w.MuzzleSalvoSize) weapon.PERSHOT = w.MuzzleSalvoSize;
-
+    if (w.MuzzleSalvoSize > weapon.PERSHOT) weapon.PERSHOT = w.MuzzleSalvoSize;
+    
     weapon.DPS = (weapon.NAME && !name.match(/Tactical Missile Launcher/)) ?
         (!w.DoTPulses ?
             (weapon.DMG * weapon.ROF * (weapon.PERSHOT ? weapon.PERSHOT : 1)) :
@@ -163,7 +163,7 @@ function updateBase() {
             questions++;
     
         if (filters.QUESTIONS.indexOf('WEAPON') + 1)
-            if(item.Weapon && item.Weapon.length > 0 && item.Weapon[0].DisplayName) questions++;
+            if(item.Weapon && item.Weapon.length > 0 && item.Weapon.reduce( ((w, i) => i.DisplayName? true : w), false)) questions++;
     
             
         if (filters.QUESTIONS.indexOf('SENSOR') + 1)
@@ -175,6 +175,7 @@ function updateBase() {
 
         return true;
     });
+
     createRandomQuestion();
 
 }
