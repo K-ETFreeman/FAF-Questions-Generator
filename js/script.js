@@ -109,12 +109,12 @@ function createRandomQuestion() {
 
     if (filters.QUESTIONS.indexOf('WEAPON') + 1)
         questions = questions.concat([
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>${weapon.ROF ? `What is <span>Damage of 1 it's Projectile</span>` : `What is <span>it's Damage</span>`}?`, weapon.NAME ? (!w.DoTPulses ? weapon.DMG : weapon.DMG * w.DoTPulses + (w.iniInitialDamage ? w.iniInitialDamage : 0)) : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/)) ? weapon.ROF : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>${weapon.ROF ? `What is <span>Damage of 1 it's Projectile</span>` : `What is <span>it's Damage</span>`}?`, weapon.NAME && !name.match(/Missile Defense/) ? (!w.DoTPulses ? weapon.DMG : weapon.DMG * w.DoTPulses + (w.iniInitialDamage ? w.iniInitialDamage : 0)) : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/) && !name.match(/Missile Defense/) && !unit.BUILDING)  ? weapon.ROF : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Range</span>?`, weapon.NAME ? weapon.RANGE : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br><span>How many projectiles in it's Fire Cycle</span>?`, (weapon.PERSHOT && weapon.PERSHOT != 1 && weapon.NAME) ? weapon.PERSHOT : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Per Second</span>?`, weapon.DPS],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Radius</span>?`, weapon.NAME ? weapon.AOE : undefined]]);
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br><span>How many projectiles in it's Fire Cycle</span>?`, (weapon.PERSHOT && weapon.PERSHOT != 1 && weapon.NAME && !name.match(/Missile Defense/)) ? weapon.PERSHOT : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Per Second</span>?`, !name.match(/Missile Defense/)? weapon.DPS : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Radius</span>?`, weapon.NAME && !name.match(/Missile Defense/) ? weapon.AOE : undefined]]);
 
     if (filters.QUESTIONS.indexOf('SENSOR') + 1)
         questions = questions.concat(
