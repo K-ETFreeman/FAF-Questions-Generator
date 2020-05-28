@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAF QuestionGenerator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Muli:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+
+      <img src="img/3.jpg" alt="">
+      <img src="img/4.jpg" alt="">
+      <img src="img/5.jpg" alt="">
+      <img src="img/6.jpg" alt="">
+      <img src="img/7.jpg" alt="">
+      <img src="img/8.jpg" alt="">
+      <img src="img/1.jpg" alt="">
+      <img src="img/2.jpg" alt="">
+
+  </div>
+
+  <div class="filters">
+    <div class="filters__race">
+      <div class="filters__string">Fraction</div>
+      <label><input type="checkbox" id="AEON" checked> Aeon</label>
+      <label> <input type="checkbox" id="CYBRAN" checked> Cybran</label>
+      <label> <input type="checkbox" id="UEF" checked> UEF</label>
+      <label> <input type="checkbox" id="SERAPHIM" checked> Seraphim</label>
+    </div>
+    <div class="filters__tech">
+      <div class="filters__string">Tech Level</div>
+      <label> <input type="checkbox" id="COMMAND" checked> ACU</label>
+      <label> <input type="checkbox" id="TECH1" checked> Tech1</label>
+      <label> <input type="checkbox" id="TECH2" checked> Tech2</label>
+      <label> <input type="checkbox" id="TECH3" checked> Tech3</label>
+      <label> <input type="checkbox" id="EXPERIMENTAL" checked> Experimental</label>
+    </div>
+    <div class="filters__building">
+      <div class="filters__string">Type</div>
+      <label> <input type="checkbox" id="UNITS" checked> Units</label>
+      <label> <input type="checkbox" id="BUILDINGS" checked> Buildings</label>
+    </div>
+  </div>
+
+  <div class="dialog">
+    <div class="dialog__question" id="question"></div>
+    <div class="dialog__guess" id="input-wrapper"><input id="input" type="text" placeholder="My answer..." autocomplete="off"></div>
+    <div class="dialog__answer" id="answrapper">The right Anwer: <span class="" id="answer"></span></div>
+  </div>
+  
+  <script src="js/script.js"></script>
+</body>
