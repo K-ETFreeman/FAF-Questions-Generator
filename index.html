@@ -6,7 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FAF QuestionGenerator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Muli:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Muli:wght@400;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -15,14 +16,14 @@
   <div class="container">
 
 
-      <img src="img/3.jpg" alt="">
-      <img src="img/4.jpg" alt="">
-      <img src="img/5.jpg" alt="">
-      <img src="img/6.jpg" alt="">
-      <img src="img/7.jpg" alt="">
-      <img src="img/8.jpg" alt="">
-      <img src="img/1.jpg" alt="">
-      <img src="img/2.jpg" alt="">
+    <img src="img/3.jpg" alt="">
+    <img src="img/4.jpg" alt="">
+    <img src="img/5.jpg" alt="">
+    <img src="img/6.jpg" alt="">
+    <img src="img/7.jpg" alt="">
+    <img src="img/8.jpg" alt="">
+    <img src="img/1.jpg" alt="">
+    <img src="img/2.jpg" alt="">
 
   </div>
 
@@ -42,18 +43,36 @@
       <label> <input type="checkbox" id="TECH3" checked> Tech3</label>
       <label> <input type="checkbox" id="EXPERIMENTAL" checked> Experimental</label>
     </div>
-    <div class="filters__building">
+    <div class="filters__type">
       <div class="filters__string">Type</div>
-      <label> <input type="checkbox" id="UNITS" checked> Units</label>
-      <label> <input type="checkbox" id="BUILDINGS" checked> Buildings</label>
+      <div class="filters__building">
+        <label> <input type="checkbox" id="UNITS" checked> Units</label>
+        <label> <input type="checkbox" id="BUILDINGS" checked> Buildings</label>
+      </div>
+      <div class="filters__icontype">
+        <label> <input type="checkbox" id="land" checked> Land</label>
+        <label> <input type="checkbox" id="amph" checked> Amph</label>
+        <label> <input type="checkbox" id="air" checked> Air</label>
+        <label> <input type="checkbox" id="sea" checked> Naval</label>
+      </div>
+    </div>
+    <div class="filters__questions">
+      <div class="filters__string">Questions</div>
+      <label><input type="checkbox" id="DEFENCE" checked> Health</label>
+      <label><input type="checkbox" id="PHYSICS" checked> Speed</label>
+      <label><input type="checkbox" id="WEAPON" checked> Weapon</label>
+      <label><input type="checkbox" id="ECONOMY" checked> Economy</label>
+      <label><input type="checkbox" id="SENSOR" checked> Sensor</label>
     </div>
   </div>
 
   <div class="dialog">
     <div class="dialog__question" id="question"></div>
-    <div class="dialog__guess" id="input-wrapper"><input id="input" type="text" placeholder="My answer..." autocomplete="off"></div>
+    <div class="dialog__guess" id="input-wrapper"><input id="input" type="text" placeholder="My answer..."
+        autocomplete="off"></div>
     <div class="dialog__answer" id="answrapper">The right Anwer: <span class="" id="answer"></span></div>
+    <div class="dialog__madeby">by <span>ETFreeman</span></div>
   </div>
-  
+
   <script src="js/script.js"></script>
 </body>
