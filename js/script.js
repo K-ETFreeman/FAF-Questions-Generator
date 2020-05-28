@@ -40,14 +40,17 @@ function getRandomUnitInfo() {
 
 let filters = {
     RACE: ['AEON', 'SERAPHIM', 'CYBRAN', 'UEF'],
-    UNITS: false,
-    BUILDINGS: false,
+    UNITS: true,
+    BUILDINGS: true,
     TECHLEVEL: ['COMMAND','TECH1', 'TECH2', 'TECH3', 'EXPERIMENTAL']
 }
 
 function updateBase() {
+    console.log(filters);
     FiltredUnits = units.filter((item) => {
         let c = item.Categories;
+
+        if ( (c.find( (i) => i == 'STRUCTURE') && !filters.BUILDINGS) || (c.find( (i) => i == 'MOBILE') && !filters.UNITS) ) return false;
 
         if (
             !c.find(i => i.match(new RegExp(
