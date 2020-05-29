@@ -40,7 +40,7 @@ function getRandomUnitInfo() {
             || unit.General.UnitName == "Lobo")
             info.WEAPONS[0].ProjectilesPerOnFire = 5;
     });
-    console.log(unit);
+
     return info;
 }
 
