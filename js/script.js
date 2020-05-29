@@ -137,7 +137,7 @@ function createRandomQuestion() {
     let QA;
     questions = questions.filter( (i) => i[1]);
      QA = rndFromArray(questions);       
-     QA[1] = parseFloat(QA[1].toFixed(1));
+     QA[1] = parseFloat(QA[1].toFixed(3));
     document.getElementById('question').innerHTML = QA[0];
     document.getElementById('answer').innerHTML = QA[1];
 }
