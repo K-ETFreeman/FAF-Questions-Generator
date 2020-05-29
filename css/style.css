@@ -289,6 +289,7 @@ body {
           transform: scale(0);
   padding: 10px;
   background-image: radial-gradient(ellipse closest-side, white 0%, rgba(209, 228, 243, 0) 100%);
+  text-align: center;
   text-shadow: 0 -1px 0 black, 0 1px 0 black, 1px 0px 0 black, -1px 0px 0 black;
 }
 

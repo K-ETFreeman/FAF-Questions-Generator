@@ -40,6 +40,7 @@ function getRandomUnitInfo() {
             || unit.General.UnitName == "Lobo")
             info.WEAPONS[0].ProjectilesPerOnFire = 5;
     });
+
     return info;
 }
 
@@ -54,6 +55,7 @@ let filters = {
 }
 
 
+let answer = [ undefined, undefined];
 
 function createRandomQuestion() {
     let unit = getRandomUnitInfo();
@@ -88,8 +90,16 @@ function createRandomQuestion() {
         : undefined;
 
     //Special
-    if (w.DisplayName=="Nanodart Launcher" && w.RackSalvoReloadTime == 2 && w.Damage == 100 && w.MaxRadius == 62 && w.RateOfFire == 1.667)
+    if (w.DisplayName=="Nanodart Launcher" && w.RackSalvoReloadTime == 2 && w.Damage == 100 && w.MaxRadius == 62 && w.RateOfFire == 1.667) {
             weapon.DPS = 213.7;
+            weapon.ROF2 = 0.178;
+    }
+
+    if (w.DisplayName=="Gatling Plasma Cannon" && w.RackSalvoReloadTime == 4.5 && w.Damage == 100 && w.MaxRadius == 60 && w.MuzzleSalvoSize == 12) {
+            weapon.DPS = 180;
+            weapon.ROF = 10;
+            weapon.ROF2 = 0.15;
+    }
 
     if (unit.WEAPONS && unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).length > 0)
             {
@@ -106,7 +116,7 @@ function createRandomQuestion() {
         } : {};
 
     let questions = [];
-    if (filters.QUESTIONS.indexOf('DEFENCE') + 1)
+    if (filters.QUESTIONS.indexOf('DEFENCE') + 1) 
         questions.push([`What is <span>Health</span> of <span class="name">${name}</span>  (${unit.RACE} ${unit.TECHLEVEL})?`, HP]);
 
     if (filters.QUESTIONS.indexOf('PHYSICS') + 1)
@@ -124,7 +134,7 @@ function createRandomQuestion() {
     if (filters.QUESTIONS.indexOf('WEAPON') + 1)
         questions = questions.concat([
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>${weapon.ROF ? `What is <span>Damage of 1 it's Projectile</span>` : `What is <span>it's Damage</span>`}?`, weapon.NAME && !name.match(/Missile Defense/) ? (!w.DoTPulses ? weapon.DMG : weapon.DMG * w.DoTPulses + (w.iniInitialDamage ? w.iniInitialDamage : 0)) : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/) && !name.match(/Missile Defense/) && !unit.BUILDING)  ? weapon.ROF : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/) && !name.match(/Missile Defense/) && !unit.BUILDING)  ? weapon.ROF : undefined, weapon.ROF2],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Range</span>?`, weapon.NAME ? weapon.RANGE : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br><span>How many projectiles it does per One Shot</span>?`, (weapon.PERSHOT && weapon.PERSHOT != 1 && weapon.NAME && !name.match(/Missile Defense/)) ? weapon.PERSHOT : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Per Second</span>?`, !name.match(/Missile Defense/)? weapon.DPS : undefined],
@@ -141,8 +151,12 @@ function createRandomQuestion() {
     questions = questions.filter( (i) => i[1]);
      QA = rndFromArray(questions);       
      QA[1] = parseFloat(QA[1].toFixed(3));
+     if (QA[2])
+        QA[2] = parseFloat(QA[2].toFixed(3));
+    answer = [QA[1], QA[2]];
+
     document.getElementById('question').innerHTML = QA[0];
-    document.getElementById('answer').innerHTML = QA[1];
+    document.getElementById('answer').innerHTML =  QA[2]? `${QA[1]} during shooting<br>${QA[2]} salvo per second overall` :QA[1];
 }
 
 function updateBase() {
@@ -262,9 +276,9 @@ document.getElementById('input').onkeyup = (e) => {
         else {
             document.getElementById('answrapper').classList.add('visible');
             state = 'visible';
-            let ans = parseFloat(document.getElementById('answer').innerHTML);
+            let ans = [parseFloat(anwer[0]), parseFloat(answer[1])];
             let guess = e.target.value;
-            if ((Math.abs(ans - guess) / ans) <= 0.1) e.target.classList.add('right');
+            if (((Math.abs(ans[0] - guess) / ans[0]) <= 0.1) || (ans[1] &&  ((Math.abs(ans[1] - guess) / ans[1]) <= 0.1) ) ) e.target.classList.add('right');
             else e.target.classList.add('wrong');
         }
     }
