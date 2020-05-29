@@ -89,7 +89,7 @@ function createRandomQuestion() {
 
     //Special
     if (w.DisplayName=="Nanodart Launcher" && w.RackSalvoReloadTime == 2 && w.Damage == 100 && w.MaxRadius == 62 && w.RateOfFire == 1.667)
-            weapon.DPS = 225;
+            weapon.DPS = 212;
 
     if (unit.WEAPONS && unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).length > 0)
             {
