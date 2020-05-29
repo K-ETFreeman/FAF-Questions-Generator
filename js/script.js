@@ -40,6 +40,7 @@ function getRandomUnitInfo() {
             || unit.General.UnitName == "Lobo")
             info.WEAPONS[0].ProjectilesPerOnFire = 5;
     });
+    console.log(unit);
     return info;
 }
 
@@ -57,6 +58,9 @@ let filters = {
 
 function createRandomQuestion() {
     let unit = getRandomUnitInfo();
+
+    do { unit = getRandomUnitInfo()}
+    while (!unit.NAME.match(/Bomber/));
     if (unit == false) {
         alert('Error. SupCom has no selected units.');
         return;
@@ -78,7 +82,7 @@ function createRandomQuestion() {
         AOE: w.DamageRadius
     };
     
-    if (w.MuzzleSalvoSize > weapon.PERSHOT) weapon.PERSHOT = w.MuzzleSalvoSize;
+    if ((w.MuzzleSalvoSize && (!weapon.PERSHOT || (w.MuzzleSalvoSize > weapon.PERSHOT) ))) weapon.PERSHOT = w.MuzzleSalvoSize;
     
     weapon.DPS = (weapon.NAME && !name.match(/Tactical Missile Launcher/)) ?
         (!w.DoTPulses ?
