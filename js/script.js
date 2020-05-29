@@ -40,7 +40,6 @@ function getRandomUnitInfo() {
             || unit.General.UnitName == "Lobo")
             info.WEAPONS[0].ProjectilesPerOnFire = 5;
     });
-
     return info;
 }
 
@@ -88,6 +87,10 @@ function createRandomQuestion() {
             (weapon.DMG * w.DoTPulses + (w.InitialDamage ? w.InitialDamage : 0)) * weapon.ROF * (weapon.PERSHOT ? weapon.PERSHOT : 1))
         : undefined;
 
+    //Special
+    if (w.DisplayName=="Nanodart Launcher" && w.RackSalvoReloadTime == 2 && w.Damage == 100 && w.MaxRadius == 62 && w.RateOfFire == 1.667)
+            weapon.DPS = 225;
+
     if (unit.WEAPONS && unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).length > 0)
             {
                 let max = unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).reduce( (val, i) => i.Damage > val? val = i.Damage : val, -1000 );
@@ -123,7 +126,7 @@ function createRandomQuestion() {
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>${weapon.ROF ? `What is <span>Damage of 1 it's Projectile</span>` : `What is <span>it's Damage</span>`}?`, weapon.NAME && !name.match(/Missile Defense/) ? (!w.DoTPulses ? weapon.DMG : weapon.DMG * w.DoTPulses + (w.iniInitialDamage ? w.iniInitialDamage : 0)) : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/) && !name.match(/Missile Defense/) && !unit.BUILDING)  ? weapon.ROF : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Range</span>?`, weapon.NAME ? weapon.RANGE : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br><span>How many projectiles in it's Fire Cycle</span>?`, (weapon.PERSHOT && weapon.PERSHOT != 1 && weapon.NAME && !name.match(/Missile Defense/)) ? weapon.PERSHOT : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br><span>How many projectiles it does per One Shot</span>?`, (weapon.PERSHOT && weapon.PERSHOT != 1 && weapon.NAME && !name.match(/Missile Defense/)) ? weapon.PERSHOT : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Per Second</span>?`, !name.match(/Missile Defense/)? weapon.DPS : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Radius</span>?`, weapon.NAME && !name.match(/Missile Defense/) ? weapon.AOE : undefined]]);
 
