@@ -59,8 +59,6 @@ let filters = {
 function createRandomQuestion() {
     let unit = getRandomUnitInfo();
 
-    do { unit = getRandomUnitInfo()}
-    while (!unit.NAME.match(/Bomber/));
     if (unit == false) {
         alert('Error. SupCom has no selected units.');
         return;
@@ -139,6 +137,7 @@ function createRandomQuestion() {
     let QA;
     questions = questions.filter( (i) => i[1]);
      QA = rndFromArray(questions);       
+     QA[1] = QA[1].toFixed(1);
     document.getElementById('question').innerHTML = QA[0];
     document.getElementById('answer').innerHTML = QA[1];
 }
