@@ -276,7 +276,7 @@ document.getElementById('input').onkeyup = (e) => {
         else {
             document.getElementById('answrapper').classList.add('visible');
             state = 'visible';
-            let ans = [parseFloat(anwer[0]), parseFloat(answer[1])];
+            let ans = [parseFloat(answer[0]), parseFloat(answer[1])];
             let guess = e.target.value;
             if (((Math.abs(ans[0] - guess) / ans[0]) <= 0.1) || (ans[1] &&  ((Math.abs(ans[1] - guess) / ans[1]) <= 0.1) ) ) e.target.classList.add('right');
             else e.target.classList.add('wrong');
