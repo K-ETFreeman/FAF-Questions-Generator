@@ -5001,7 +5001,7 @@ let base = `{
       "General": {
         "FactionName": "UEF",
         "Icon": "air",
-        "UnitName": "C-D2 \"Rover-2\"",
+        "UnitName": "C-D2 'Rover-2'",
         "Classification": "RULEUC_Engineer"
       },
       "StrategicIconName": "icon_land1_engineer",
@@ -8490,7 +8490,7 @@ let base = `{
         null
       ],
       "General": {
-        "UnitName": "C-D3 \"Rover-3\"",
+        "UnitName": "C-D3 'Rover-3'",
         "Icon": "air",
         "FactionName": "UEF",
         "Classification": "RULEUC_Engineer"
@@ -48360,6 +48360,8 @@ let base = `{
 
 
 let units = JSON.parse(base).units;
+for (let u of units)
+    u.Categories = u.Categories.filter(el => el)
 
 
 function rndFromArray(array) {
@@ -48383,7 +48385,7 @@ function getRandomUnitInfo() {
         TECHLEVEL: "",
         BUILDING: false,
         NAME: unit.Description,
-        WEAPONS: unit.Weapon? unit.Weapon.filter( (i)=>i.DisplayName && i.Damage) : undefined,
+        WEAPONS: unit.Weapon ? unit.Weapon.filter((i) => i.DisplayName && i.Damage) : undefined,
         ECONOMY: unit.Economy,
         SUPPORT: unit.Intel,
         DEFENCE: unit.Defense,
@@ -48411,11 +48413,11 @@ let filters = {
     BUILDINGS: true,
     TECHLEVEL: ['COMMAND', 'TECH1', 'TECH2', 'TECH3', 'EXPERIMENTAL'],
     QUESTIONS: ['DEFENCE', 'ECONOMY', 'SENSOR', 'WEAPON', 'PHYSICS'],
-    ICONTYPE : ['land', 'air', 'amph', 'sea']
+    ICONTYPE: ['land', 'air', 'amph', 'sea']
 }
 
 
-let answer = [ undefined, undefined];
+let answer = [undefined, undefined];
 
 function createRandomQuestion() {
     let unit = getRandomUnitInfo();
@@ -48440,9 +48442,9 @@ function createRandomQuestion() {
         PERSHOT: w.ProjectilesPerOnFire,
         AOE: w.DamageRadius
     };
-    
-    if ((w.MuzzleSalvoSize && (!weapon.PERSHOT || (w.MuzzleSalvoSize > weapon.PERSHOT) ))) weapon.PERSHOT = w.MuzzleSalvoSize;
-    
+
+    if ((w.MuzzleSalvoSize && (!weapon.PERSHOT || (w.MuzzleSalvoSize > weapon.PERSHOT)))) weapon.PERSHOT = w.MuzzleSalvoSize;
+
     weapon.DPS = (weapon.NAME && !name.match(/Tactical Missile Launcher/)) ?
         (!w.DoTPulses ?
             (weapon.DMG * weapon.ROF * (weapon.PERSHOT ? weapon.PERSHOT : 1)) :
@@ -48462,11 +48464,10 @@ function createRandomQuestion() {
             weapon.ROF2 = 0.15;
     }*/
 
-    if (unit.WEAPONS && unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).length > 0)
-            {
-                let max = unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).reduce( (val, i) => i.Damage > val? val = i.Damage : val, -1000 );
-                if (weapon.DMG < max) weapon.NAME += ' (minor)';
-            }
+    if (unit.WEAPONS && unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).length > 0) {
+        let max = unit.WEAPONS.filter(i => i.DisplayName == weapon.NAME).reduce((val, i) => i.Damage > val ? val = i.Damage : val, -1000);
+        if (weapon.DMG < max) weapon.NAME += ' (minor)';
+    }
 
     let vision = unit.SUPPORT ?
         {
@@ -48477,7 +48478,7 @@ function createRandomQuestion() {
         } : {};
 
     let questions = [];
-    if (filters.QUESTIONS.indexOf('DEFENCE') + 1) 
+    if (filters.QUESTIONS.indexOf('DEFENCE') + 1)
         questions.push([`What is <span>Health</span> of <span class="name">${name}</span>  (${unit.RACE} ${unit.TECHLEVEL})?`, HP]);
 
     if (filters.QUESTIONS.indexOf('PHYSICS') + 1)
@@ -48495,10 +48496,10 @@ function createRandomQuestion() {
     if (filters.QUESTIONS.indexOf('WEAPON') + 1)
         questions = questions.concat([
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>${weapon.ROF ? `What is <span>Damage of 1 it's Projectile</span>` : `What is <span>it's Damage</span>`}?`, weapon.NAME && !name.match(/Missile Defense/) ? (!w.DoTPulses ? weapon.DMG : weapon.DMG * w.DoTPulses + (w.iniInitialDamage ? w.iniInitialDamage : 0)) : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/) && !name.match(/Missile Defense/) && !unit.BUILDING)  ? weapon.ROF : undefined, weapon.ROF2],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Rate of Fire</span>?`, (weapon.NAME && weapon.NAME != "Death Weapon" && !name.match(/Tactical Missile Launcher/) && !name.match(/Missile Defense/) && !unit.BUILDING) ? weapon.ROF : undefined, weapon.ROF2],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Range</span>?`, weapon.NAME ? weapon.RANGE : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br><span>How many projectiles it does per One Shot</span>?`, (weapon.PERSHOT && weapon.PERSHOT != 1 && weapon.NAME && !name.match(/Missile Defense/)) ? weapon.PERSHOT : undefined],
-            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Per Second</span>?`, !name.match(/Missile Defense/)? weapon.DPS : undefined],
+            [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Per Second</span>?`, !name.match(/Missile Defense/) ? weapon.DPS : undefined],
             [`<span class="name">${name}</span> (${unit.RACE} ${unit.TECHLEVEL})<br> has a weapon <span class="weapon">"${weapon.NAME}"</span>.<br>What is it's <span>Damage Radius</span>?`, weapon.NAME && !name.match(/Missile Defense/) ? weapon.AOE : undefined]]);
 
     if (filters.QUESTIONS.indexOf('SENSOR') + 1)
@@ -48506,18 +48507,18 @@ function createRandomQuestion() {
             [[`What is <span>Radar Range</span> of <span class="name">${name}</span>? (${unit.RACE} ${unit.TECHLEVEL})`, vision.RADAR],
             [`What is <span>Sonar Range</span> of <span class="name">${name}</span>? (${unit.RACE} ${unit.TECHLEVEL})`, vision.SONAR],
             [`What is <span>Vision Range</span> of <span class="name">${name}</span>? (${unit.RACE} ${unit.TECHLEVEL})`, vision.VISION],
-            [`What is <span>Water Vision</span> Range of <span class="name">${name}</span>? (${unit.RACE} ${unit.TECHLEVEL})`, vision.WATERVISION] ]);
+            [`What is <span>Water Vision</span> Range of <span class="name">${name}</span>? (${unit.RACE} ${unit.TECHLEVEL})`, vision.WATERVISION]]);
 
     let QA;
-    questions = questions.filter( (i) => i[1]);
-     QA = rndFromArray(questions);       
-     QA[1] = parseFloat(QA[1].toFixed(3));
-     if (QA[2])
+    questions = questions.filter((i) => i[1]);
+    QA = rndFromArray(questions);
+    QA[1] = parseFloat(QA[1].toFixed(3));
+    if (QA[2])
         QA[2] = parseFloat(QA[2].toFixed(3));
     answer = [QA[1], QA[2]];
 
     document.getElementById('question').innerHTML = QA[0];
-    document.getElementById('answer').innerHTML =  QA[2]? `${QA[1]} during shooting<br>${QA[2]} salvo per second overall` :QA[1];
+    document.getElementById('answer').innerHTML = QA[2] ? `${QA[1]} during shooting<br>${QA[2]} salvo per second overall` : QA[1];
 }
 
 function updateBase() {
@@ -48545,27 +48546,27 @@ function updateBase() {
         let questions = 0;
         if (filters.QUESTIONS.indexOf('DEFENCE') + 1)
             questions++;
-    
+
         if (filters.QUESTIONS.indexOf('PHYSICS') + 1)
-            if(item.Physics && item.Physics.MaxSpeed) questions++;
-    
+            if (item.Physics && item.Physics.MaxSpeed) questions++;
+
         if (filters.QUESTIONS.indexOf('ECONOMY') + 1)
             questions++;
-    
+
         if (filters.QUESTIONS.indexOf('WEAPON') + 1)
-            if(item.Weapon && item.Weapon.length > 0 && item.Weapon.reduce( ((w, i) => i.DisplayName && i.Damage ? true : w), false)) questions++;
-    
-            
+            if (item.Weapon && item.Weapon.length > 0 && item.Weapon.reduce(((w, i) => i.DisplayName && i.Damage ? true : w), false)) questions++;
+
+
         if (filters.QUESTIONS.indexOf('SENSOR') + 1)
             if (item.Intel) questions++;
 
 
-        if(!questions) return false;
+        if (!questions) return false;
 
 
         return true;
     });
-    
+
     createRandomQuestion();
 
 }
@@ -48586,7 +48587,7 @@ document.querySelectorAll('.filters__race input,.filters__tech input,.filters__i
     if (item.match(/(TECH1)?(TECH2)?(TECH3)?(EXPERIMENTAL)?(COMMAND)?/)[0].length) arr = filters.TECHLEVEL;
     if (item.match(/(air)?(land)?(amph)?(sea)?/)[0].length) arr = filters.ICONTYPE;
     if (item.match(/(WEAPON)?(DEFENCE)?(PHYSICS)?(SENSOR)?(ECONOMY)?/)[0].length) arr = filters.QUESTIONS;
-    
+
     if (arr.indexOf(item) == -1)
         arr.push(item);
     else
@@ -48639,7 +48640,7 @@ document.getElementById('input').onkeyup = (e) => {
             state = 'visible';
             let ans = [parseFloat(answer[0]), parseFloat(answer[1])];
             let guess = e.target.value;
-            if (((Math.abs(ans[0] - guess) / ans[0]) <= 0.1) || (ans[1] &&  ((Math.abs(ans[1] - guess) / ans[1]) <= 0.1) ) ) e.target.classList.add('right');
+            if (((Math.abs(ans[0] - guess) / ans[0]) <= 0.1) || (ans[1] && ((Math.abs(ans[1] - guess) / ans[1]) <= 0.1))) e.target.classList.add('right');
             else e.target.classList.add('wrong');
         }
     }
