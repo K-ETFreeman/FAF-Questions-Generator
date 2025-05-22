@@ -48359,7 +48359,9 @@ let base = `{
 }`
 
 
-let units = JSON.parse(base).units;
+const b = JSON.parse(base);
+document.getElementById('version').innerHTML = b.version;
+let units = b.units;
 for (let u of units)
     u.Categories = u.Categories.filter(el => el)
 
